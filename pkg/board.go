@@ -94,11 +94,10 @@ func (b *Board) checkWinner() (bool, string) {
 		{0, 4, 8}, {2, 4, 6}, // Diagonals
 	}
 
-	for i := 0; i < len(winning_options); i++ {
-		option := winning_options[i]
-		if b.isSameValue(option[0], option[1], option[2]) && !b.checkMark(" ", winning_options[i][0]) {
-			fmt.Println("Player " + b.board[option[0]].value + " wins!")
-			return true, b.board[option[0]].value
+	for _, wop := range winning_options {
+		if b.isSameValue(wop[0], wop[1], wop[2]) && !b.checkMark(" ", wop[0]) {
+			fmt.Println("Player " + b.board[wop[0]].value + " wins!")
+			return true, b.board[wop[0]].value
 		}
 	}
 
@@ -124,19 +123,21 @@ func (b *Board) CheckWinnerOption(mark string) int {
 		{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Rows
 		{0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Columns
 		{0, 4, 8}, {2, 4, 6}, // Diagonals
+
 	}
-	wining_option := -1
-	for i := 0; i < len(winning_options); i++ {
-		if b.checkMark(" ", winning_options[i][0]) && b.isSameValue(winning_options[i][1], winning_options[i][2]) && b.checkMark(mark, winning_options[i][1]) {
-			wining_option = winning_options[i][0]
+	wop_check := -1
+
+	for _, wop := range winning_options {
+		if b.isSameValue(wop[0], wop[1]) && b.checkMark(" ", wop[2]) && b.checkMark(mark, wop[0]) {
+			wop_check = wop[2]
 		}
-		if b.checkMark(" ", winning_options[i][1]) && b.isSameValue(winning_options[i][0], winning_options[i][2]) && b.checkMark(mark, winning_options[i][2]) {
-			wining_option = winning_options[i][1]
+		if b.isSameValue(wop[1], wop[2]) && b.checkMark(" ", wop[0]) && b.checkMark(mark, wop[1]) {
+			wop_check = wop[0]
 		}
-		if b.checkMark(" ", winning_options[i][2]) && b.isSameValue(winning_options[i][0], winning_options[i][1]) && b.checkMark(mark, winning_options[i][0]) {
-			wining_option = winning_options[i][2]
+		if b.isSameValue(wop[0], wop[2]) && b.checkMark(" ", wop[1]) && b.checkMark(mark, wop[0]) {
+			wop_check = wop[1]
 		}
 	}
 
-	return wining_option
+	return wop_check
 }
