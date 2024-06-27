@@ -51,7 +51,10 @@ func vsComputer(board *pkg.Board, cmp *pkg.Computer) {
 			fmt.Println("Enter the position (1-9) for value " + x_or_o + ":")
 			var position int
 			fmt.Scanf("%d", &position)
-			board.UpdateBoard(position, x_or_o)
+			err := makePlay(board, position, x_or_o)
+			if err != nil {
+				continue
+			}
 		}
 		end_game, msg = board.CheckStatus()
 		if end_game {
@@ -68,10 +71,8 @@ func vsHuman(board *pkg.Board) {
 		fmt.Println("Enter the position (1-9) for value " + x_or_o + ":")
 		var position int
 		fmt.Scanf("%d", &position)
-		err := board.UpdateBoard(position, x_or_o)
+		err := makePlay(board, position, x_or_o)
 		if err != nil {
-			fmt.Println(err)
-			_ = board.GetNext()
 			continue
 		}
 		end_game, msg = board.CheckStatus()
@@ -79,4 +80,14 @@ func vsHuman(board *pkg.Board) {
 			fmt.Println(msg)
 		}
 	}
+}
+
+func makePlay(board *pkg.Board, position int, x_or_o string) error {
+	err := board.UpdateBoard(position, x_or_o)
+	if err != nil {
+		fmt.Println(err)
+		_ = board.GetNext()
+	}
+
+	return err
 }
