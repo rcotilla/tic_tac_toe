@@ -45,17 +45,21 @@ func (b *Board) PrintBoard() {
 }
 
 // UpdateBoard updates the board with the player's move.
-func (b *Board) UpdateBoard(position int, value string) {
+func (b *Board) UpdateBoard(position int, value string) error {
 	possible_values := []string{"X", "O"}
 	if !slices.Contains(possible_values, value) {
-		fmt.Println("Invalid value. Please enter X or O.")
-		return
-	} else {
-		b.board[position-1].value = value
+		return fmt.Errorf("invalid value. Please enter X or O")
 	}
+
+	if b.board[position-1].value != " " {
+		return fmt.Errorf("position %d is already taken", position)
+	}
+
+	b.board[position-1].value = value
 
 	fmt.Println(strings.Repeat("+", 15))
 	b.PrintBoard()
+	return nil
 }
 
 func (b *Board) GetNext() string {
