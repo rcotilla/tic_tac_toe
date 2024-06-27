@@ -68,7 +68,12 @@ func vsHuman(board *pkg.Board) {
 		fmt.Println("Enter the position (1-9) for value " + x_or_o + ":")
 		var position int
 		fmt.Scanf("%d", &position)
-		board.UpdateBoard(position, x_or_o)
+		err := board.UpdateBoard(position, x_or_o)
+		if err != nil {
+			fmt.Println(err)
+			_ = board.GetNext()
+			continue
+		}
 		end_game, msg = board.CheckStatus()
 		if end_game {
 			fmt.Println(msg)
