@@ -78,6 +78,8 @@ func vsHuman(board *pkg.Board) {
 		end_game, msg = board.CheckStatus()
 		if end_game {
 			fmt.Println(msg)
+			fmt.Println("Presione Enter para salir.")
+			fmt.Scanln()
 		}
 	}
 }
